@@ -27,6 +27,10 @@ public class Parking {
     }
 
     public void unPark(int ticketNumber){
-        
+
+    }
+
+    public List<Car> getParkedCars() {
+        return parkedCars;
     }
 }

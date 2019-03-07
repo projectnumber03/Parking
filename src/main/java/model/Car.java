@@ -15,4 +15,8 @@ public class Car {
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
     }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
 }
