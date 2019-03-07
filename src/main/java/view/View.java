@@ -11,10 +11,10 @@ public class View {
     }
 
     public void showParkedCars(Parking parking){
-        System.out.println("===========================================");
+        System.out.println("================================================");
         System.out.println("Припаркованные автомобили:");
         parking.getParkedCars().stream().forEach(x -> System.out.println("\tНомер: " + x.getPlate() + " | Парковочный билет: " + x.getTicket().getValue()));
-        System.out.println("===========================================");
+        System.out.println("================================================");
     }
 
     public void showFreeSpace(Parking parking){
