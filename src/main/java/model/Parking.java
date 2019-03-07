@@ -17,10 +17,6 @@ public class Parking {
         IntStream.range(1, space + 1).forEach(x -> tickets.push(new Ticket(space + 1 - x)));
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
     public void park(Car car){
         if (parkedCars.size() < parkingSize){
             car.setTicket(tickets.pop());

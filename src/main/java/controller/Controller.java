@@ -31,27 +31,19 @@ public class Controller {
                 System.exit(0);
                 break;
         }
-        if(command.startsWith("p:")){
-            try{
+        try{
+            if(command.startsWith("p:")){
                 int numberOfCars = Integer.valueOf(command.substring(2));
                 IntStream.range(0, numberOfCars).forEach(x -> onParkCar());
-            }catch (Exception e){
-                System.out.println("Ошибка выполнения команды");
-            }
-        }else if(command.startsWith("u:[") && command.endsWith("]")){
-            try{
+            }else if(command.startsWith("u:[") && command.endsWith("]")){
                 String[] numbersOfTickets = command.substring(3, command.length() - 1).split(",");
                 Arrays.stream(numbersOfTickets).mapToInt(Integer::valueOf).forEach(this::onUnparkCar);
-            }catch (Exception e){
-                System.out.println("Ошибка выполнения команды");
-            }
-        }else if(command.startsWith("u:")){
-            try {
+            }else if(command.startsWith("u:")){
                 int numberOfTicket = Integer.valueOf(command.substring(2));
                 onUnparkCar(numberOfTicket);
-            }catch (Exception e){
-                System.out.println("Ошибка выполнения команды");
             }
+        }catch (Exception e){
+            System.out.println("Ошибка выполнения команды");
         }
     }
 
