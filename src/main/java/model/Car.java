@@ -1,12 +1,10 @@
 package model;
 
-public class Car {
-    private final String plate;
-    private Ticket ticket;
+import util.NumberGenerator;
 
-    public Car(String plate) {
-        this.plate = plate;
-    }
+public class Car {
+    private final String plate = NumberGenerator.generate();
+    private Ticket ticket;
 
     public String getPlate() {
         return plate;
