@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.IntStream;
@@ -8,7 +9,7 @@ import java.util.stream.IntStream;
 public class Parking {
     private final int parkingSize;
     private final Stack<Ticket> tickets = new Stack<>();
-    private final List<Car> parkedCars = new ArrayList<>();
+    private final List<Car> parkedCars = Collections.synchronizedList(new ArrayList<>());
     private int space;
 
     public Parking(int parkingSize) {
@@ -18,18 +19,21 @@ public class Parking {
     }
 
     public void park(Car car){
-        if (parkedCars.size() < parkingSize){
-            car.setTicket(tickets.pop());
-            parkedCars.add(car);
-            space--;
-        }
+        car.setState(Car.State.parking);
+        car.setTicket(tickets.pop());
+        space--;
+        new Thread(car).start();
     }
 
     public void unPark(int ticketNumber){
         Car car = getCarByTicket(ticketNumber);
-        tickets.push(car.getTicket());
-        parkedCars.remove(car);
-        space++;
+        if(car != null){
+            car.setState(Car.State.unparking);
+            tickets.push(car.getTicket());
+            parkedCars.remove(car);
+            space++;
+            new Thread(car).start();
+        }else System.out.println("Автомобиля с данным талоном нет на стоянке");
     }
 
     public List<Car> getParkedCars() {
@@ -40,7 +44,11 @@ public class Parking {
         return space;
     }
 
-    public Car getCarByTicket(int ticketNumber){
+    public int getParkingSize() {
+        return parkingSize;
+    }
+
+    private Car getCarByTicket(int ticketNumber){
         for (Car car : parkedCars){
             if(car.getTicket().getValue() == ticketNumber) return car;
         }

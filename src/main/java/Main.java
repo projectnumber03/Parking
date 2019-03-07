@@ -1,29 +1,23 @@
 import controller.Controller;
+import model.Car;
 import model.Parking;
 import view.View;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        Parking parking = new Parking(5);
+        Parking parking = new Parking(Integer.valueOf(args[0]));
+        Car.delay = Integer.valueOf(args[1]) * 1000;
         Controller controller = new Controller();
         View view = new View();
         controller.setView(view);
-        view.setController(controller);
         controller.setParking(parking);
+        view.setController(controller);
+        Scanner scan = new Scanner(System.in);
 
-        controller.execute("p:5");
-
-        controller.execute("l");
-        controller.execute("c");
-
-        controller.execute("u:[3,5]");
-
-        controller.execute("l");
-        controller.execute("c");
-
-        controller.execute("p:1");
-
-        controller.execute("l");
-        controller.execute("c");
+        while (true){
+            controller.execute(scan.nextLine());
+        }
     }
 }
