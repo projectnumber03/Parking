@@ -13,7 +13,6 @@ public class Main {
         View view = new View();
         controller.setView(view);
         controller.setParking(parking);
-        view.setController(controller);
         Scanner scan = new Scanner(System.in);
 
         while (true){
