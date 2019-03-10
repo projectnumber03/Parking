@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.Semaphore;
 import java.util.stream.IntStream;
 
 public class Parking {
     private final int parkingSize;
     private final Stack<Ticket> tickets = new Stack<>();
     private final List<Car> parkedCars = Collections.synchronizedList(new ArrayList<>());
+    private Semaphore semaphore = new Semaphore(2);
     private int space;
 
     public Parking(int parkingSize) {
@@ -46,6 +48,10 @@ public class Parking {
 
     public int getParkingSize() {
         return parkingSize;
+    }
+
+    public Semaphore getSemaphore() {
+        return semaphore;
     }
 
     private Car getCarByTicket(int ticketNumber){

@@ -3,6 +3,7 @@ package model;
 import util.NumberGenerator;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Car implements Runnable{
     private final String plate = NumberGenerator.generate();
@@ -10,13 +11,15 @@ public class Car implements Runnable{
     private Ticket ticket;
     private State state;
     private List<Car> parkingPlaces;
+    private Semaphore semaphore;
 
     protected enum State{
         parking, unparking
     }
 
-    public Car(List<Car> parkingPlaces) {
+    public Car(List<Car> parkingPlaces, Semaphore semaphore) {
         this.parkingPlaces = parkingPlaces;
+        this.semaphore = semaphore;
     }
 
     public String getPlate() {
@@ -40,16 +43,20 @@ public class Car implements Runnable{
         try{
             switch (state){
                 case parking:
-                    System.out.println("Автомобиль с номером " + plate + " заезжает на парковку");
+                    semaphore.acquire();
+                    System.out.printf("Автомобиль с номером %s заезжает на парковку\n", plate);
                     Thread.sleep(delay);
                     parkingPlaces.add(this);
-                    System.out.println("Автомобиль с номером " + plate + " припаркован");
+                    System.out.printf("Автомобиль с номером %s припаркован\n", plate);
+                    semaphore.release();
                     break;
                 case unparking:
-                    System.out.println("Автомобиль с номером " + plate + " выезжает с парковки");
+                    semaphore.acquire();
+                    System.out.printf("Автомобиль с номером %s выезжает с парковки\n", plate);
                     Thread.sleep(delay);
                     parkingPlaces.remove(this);
-                    System.out.println("Автомобиль с номером " + plate + " покинул парковку");
+                    System.out.printf("Автомобиль с номером %s покинул парковку\n", plate);
+                    semaphore.release();
                     break;
             }
         }catch (Exception e){

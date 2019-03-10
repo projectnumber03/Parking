@@ -57,7 +57,7 @@ public class Controller {
     }
 
     private void onParkCar(){
-        parking.park(new Car(parking.getParkedCars()));
+        parking.park(new Car(parking.getParkedCars(), parking.getSemaphore()));
     }
 
     private void onUnparkCar(int ticketNumber){
