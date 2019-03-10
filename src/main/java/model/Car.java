@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Car implements Runnable{
-    private final String plate = NumberGenerator.generate();
     public static int delay;
+    private final String plate = NumberGenerator.generate();
     private Ticket ticket;
     private State state;
     private List<Car> parkingPlaces;
