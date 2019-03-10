@@ -14,7 +14,7 @@ public class Main {
         controller.setView(view);
         controller.setParking(parking);
         Scanner scan = new Scanner(System.in);
-
+        view.showCommandList();
         while (true){
             controller.execute(scan.nextLine());
         }

@@ -35,7 +35,7 @@ public class Controller {
             if(command.startsWith("p:")){
                 int numberOfCars = Integer.valueOf(command.substring(2));
                 if(numberOfCars <= parking.getParkingSize())IntStream.range(0, numberOfCars).forEach(x -> onParkCar());
-                else System.out.println("Для автомобилей недостаточно места");
+                else view.showNotEnoughSpace();
             }else if(command.startsWith("u:[") && command.endsWith("]")){
                 String[] numbersOfTickets = command.substring(3, command.length() - 1).split(",");
                 Arrays.stream(numbersOfTickets).mapToInt(Integer::valueOf).forEach(this::onUnparkCar);
@@ -44,7 +44,7 @@ public class Controller {
                 onUnparkCar(numberOfTicket);
             }
         }catch (Exception e){
-            System.out.println("Ошибка выполнения команды");
+            view.showCommandError();
         }
     }
 
@@ -57,10 +57,26 @@ public class Controller {
     }
 
     private void onParkCar(){
-        parking.park(new Car(parking.getParkedCars(), parking.getSemaphore()));
+        parking.park(this);
     }
 
     private void onUnparkCar(int ticketNumber){
-        parking.unPark(ticketNumber);
+        parking.unPark(ticketNumber, this);
+    }
+
+    public void onCarStartParking(Car car){
+        view.showParkingStartMessage(car);
+    }
+
+    public void onCarEndParking(Car car){
+        view.showParkingEndMessage(car);
+    }
+
+    public void onCarStartUnparking(Car car){
+        view.showUnparkingStartMessage(car);
+    }
+
+    public void onCarEndUnparking(Car car){
+        view.showUnparkingEndMessage(car);
     }
 }

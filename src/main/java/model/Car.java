@@ -1,5 +1,6 @@
 package model;
 
+import controller.Controller;
 import util.NumberGenerator;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class Car implements Runnable{
     private State state;
     private List<Car> parkingPlaces;
     private Semaphore semaphore;
+    private Controller controller;
 
     protected enum State{
         parking, unparking
@@ -38,24 +40,28 @@ public class Car implements Runnable{
         this.state = state;
     }
 
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
     @Override
     public void run() {
         try{
             switch (state){
                 case parking:
                     semaphore.acquire();
-                    System.out.printf("Автомобиль с номером %s заезжает на парковку\n", plate);
+                    controller.onCarStartParking(this);
                     Thread.sleep(delay);
                     parkingPlaces.add(this);
-                    System.out.printf("Автомобиль с номером %s припаркован\n", plate);
+                    controller.onCarEndParking(this);
                     semaphore.release();
                     break;
                 case unparking:
                     semaphore.acquire();
-                    System.out.printf("Автомобиль с номером %s выезжает с парковки\n", plate);
+                    controller.onCarStartUnparking(this);
                     Thread.sleep(delay);
                     parkingPlaces.remove(this);
-                    System.out.printf("Автомобиль с номером %s покинул парковку\n", plate);
+                    controller.onCarEndUnparking(this);
                     semaphore.release();
                     break;
             }
